@@ -1,6 +1,7 @@
 from serpapi import GoogleSearch
 import secrets
 
+
 def main():
     complete_data = []
     for page in range(5):
@@ -9,8 +10,7 @@ def main():
     save_output(complete_data)
 
 
-
-def get_data(page:int)->dict:
+def get_data(page: int) -> dict:
     params = {
         "api_key": secrets.api_key,
         "engine": "google_jobs",
@@ -27,11 +27,13 @@ def get_data(page:int)->dict:
     results = search.get_dict()
     return results["jobs_results"]
 
-def save_output(data_to_write:list[dict]):
+
+def save_output(data_to_write: list[dict]):
     output_file = open("output.txt", "w")
     for job in data_to_write:
         print(job, file=output_file)
     output_file.close()
+
 
 if __name__ == '__main__':
     main()
