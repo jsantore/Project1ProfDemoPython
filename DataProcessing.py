@@ -54,7 +54,7 @@ def clean_data_for_db(raw_job_data: list[dict]) -> list[Tuple]:
         benefits_section = {}
         # the benefits section can be in and position in the job_highlights list, so we look for it
         for section in job_highlights:
-            if section["title"] == "Benefits":
+            if section.get("title") == "Benefits":
                 benefits_section = section
         min_salary, max_salary = get_salary(benefits_section, job_description.lower())
         salary_time_period = 'N/A'
