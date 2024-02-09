@@ -22,7 +22,13 @@ def get_data(page: int) -> List[dict]:
     results = search.get_dict()
     return results["jobs_results"]
 
-
+def get_multiple_pages_of_jobs(num_pages: int) -> List[tuple]:
+    complete_data = []
+    for page in range(num_pages):
+        current_data = get_data(page)
+        clean_data = clean_data_for_db(current_data)
+        complete_data.extend(clean_data)
+    return complete_data
 
 
 

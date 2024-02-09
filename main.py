@@ -3,13 +3,9 @@ import DbUtils
 
 
 def main():
-    complete_data = []
     conn, cursor = DbUtils.open_db("Comp490Jobs.sqlite")
     DbUtils.setup_db(cursor)
-    for page in range(5):
-        current_data = DataProcessing.get_data(page)
-        clean_data = DataProcessing.clean_data_for_db(current_data)
-        complete_data.extend(clean_data)
+    complete_data = DataProcessing.get_multiple_pages_of_jobs(5)
     DbUtils.save_to_db(cursor, complete_data)
     DbUtils.close_db(conn)
 
