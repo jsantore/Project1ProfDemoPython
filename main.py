@@ -1,31 +1,20 @@
-from serpapi import GoogleSearch
-import secrets
+import DataProcessing
+import DbUtils
 
 
 def main():
     complete_data = []
+    conn, cursor = DbUtils.open_db("Comp490Jobs.sqlite")
+    DbUtils.setup_db(cursor)
     for page in range(5):
-        current_data = get_data(page)
-        complete_data.extend(current_data)
-    save_output(complete_data)
+        current_data = DataProcessing.get_data(page)
+        clean_data = DataProcessing.clean_data_for_db(current_data)
+        complete_data.extend(clean_data)
+    DbUtils.save_to_db(cursor, complete_data)
+    DbUtils.close_db(conn)
 
 
-def get_data(page: int) -> dict:
-    params = {
-        "api_key": secrets.api_key,
-        "engine": "google_jobs",
-        "q": "Software Developer",
-        "google_domain": "google.com",
-        "hl": "en",
-        "gl": "us",
-        "location": "Boston, Massachusetts, United States",
-        "start": page,
-        "lrad": "100"
-    }
 
-    search = GoogleSearch(params)
-    results = search.get_dict()
-    return results["jobs_results"]
 
 
 def save_output(data_to_write: list[dict]):
