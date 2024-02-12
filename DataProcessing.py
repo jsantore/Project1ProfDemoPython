@@ -22,6 +22,7 @@ def get_data(page: int) -> List[dict]:
     results = search.get_dict()
     return results["jobs_results"]
 
+
 def get_multiple_pages_of_jobs(num_pages: int) -> List[tuple]:
     complete_data = []
     for page in range(num_pages):
@@ -29,7 +30,6 @@ def get_multiple_pages_of_jobs(num_pages: int) -> List[tuple]:
         clean_data = clean_data_for_db(current_data)
         complete_data.extend(clean_data)
     return complete_data
-
 
 
 def clean_data_for_db(raw_job_data: list[dict]) -> list[Tuple]:
@@ -58,11 +58,11 @@ def clean_data_for_db(raw_job_data: list[dict]) -> list[Tuple]:
                 benefits_section = section
         min_salary, max_salary = get_salary(benefits_section, job_description.lower())
         salary_time_period = 'N/A'
-        if 0<min_salary<900:
+        if 0 < min_salary < 900:
             salary_time_period = 'Hourly'
         elif min_salary > 0:
             salary_time_period = "Yearly"
-        prepared_data = (job_id, job_title,company_name,job_description,location,min_salary,max_salary,
+        prepared_data = (job_id, job_title, company_name, job_description, location, min_salary, max_salary,
                          salary_time_period, posted_date, url, remote)
         db_ready_data.append(prepared_data)
     return db_ready_data
@@ -72,24 +72,27 @@ def get_salary(benefits_section: dict, job_description: str):
     """this is more complicated than you were required to do, I'm looking in several places for salary info"""
     min_salary = 0
     max_salary = 0
-    if benefits_section: # if we got a dictionary with stuff in it
+    if benefits_section:  # if we got a dictionary with stuff in it
         for benefit_item in benefits_section['items']:
             if 'range' in benefit_item.lower():
-                # from https://stackoverflow.com/questions/63714217/how-can-i-extract-numbers-containing-commas-from-strings-in-python
+                # from https://stackoverflow.com/questions/63714217/how-can-i-extract-numbers-containing-commas-from
+                # -strings-in-python
                 numbers = re.findall(r'\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)', benefit_item)
-                if numbers: # if we found salary data, return it
+                if numbers:  # if we found salary data, return it
                     return int(numbers[0].replace(',', '')), int(numbers[1].replace(',', ''))
             numbers = re.findall(r'\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)', benefit_item)
-            if len(numbers) ==2 and int(numbers[0].replace(',', ''))>30: # some jobs just put the numbers in one item and the the description in another
+            if len(numbers) == 2 and int(
+                    numbers[0].replace(',', '')) > 30:  # some jobs just put the numbers in one item
+                # and the the description in another
                 return int(numbers[0].replace(',', '')), int(numbers[1].replace(',', ''))
             else:
                 return min_salary, max_salary
     location = job_description.find("salary range")
-    if location <0:
+    if location < 0:
         location = job_description.find("pay range")
-    if location <0:
+    if location < 0:
         return min_salary, max_salary
-    numbers = re.findall(r'\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)', job_description[location:location+50])
+    numbers = re.findall(r'\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)', job_description[location:location + 50])
     if numbers:
         return int(numbers[0].replace(',', '')), int(numbers[1].replace(',', ''))
     return min_salary, max_salary

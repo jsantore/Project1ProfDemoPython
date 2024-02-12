@@ -27,14 +27,15 @@ def setup_db(cursor: sqlite3.Cursor):
     url TEXT NOT NULL,
     remote BOOLEAN NOT NULL);''')
 
-def insert_job(cursor: sqlite3.Cursor, job_tuple:Tuple):
+
+def insert_job(cursor: sqlite3.Cursor, job_tuple: Tuple):
     statement = '''INSERT OR IGNORE INTO jobs_listings 
     (job_id, job_title, company_name, job_description, location, min_salary, max_salary, salary_time,
     posted_at, url, remote) VALUES (?, ?, ?,?,?,?,?,?,?,?, ?);'''
     cursor.execute(statement, job_tuple)
 
 
-def save_to_db(cursor: sqlite3.Cursor, all_jobs:list[Tuple]):
+def save_to_db(cursor: sqlite3.Cursor, all_jobs: list[Tuple]):
     for job in all_jobs:
         try:
             insert_job(cursor, job)
