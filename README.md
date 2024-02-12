@@ -1,4 +1,4 @@
-This is the Professors version of the Project1, currently Sprint1
+This is the Professors version of the Project1, currently Sprint2
 
 The secrets.py should be in the follwing format
 
