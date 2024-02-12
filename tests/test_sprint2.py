@@ -14,7 +14,7 @@ def test_insert_data():
                   "Bridgewater, MA", 50000, 90000, "Yearly", "Tomorrow",
                   "https://webhost.bridgew.edu/jsantore/Spring2024/Capstone/Project1Sprint2.html", True)
     DbUtils.insert_job(cursor, sample_job)
-    cursor.execute("""SELECT job_title, location, min_salary 
+    cursor.execute("""SELECT job_title, location, min_salary
     FROM jobs_listings WHERE job_id = ?""", (sample_job[0],))
     record = cursor.fetchone()
     assert record[0] == "Test Job"
