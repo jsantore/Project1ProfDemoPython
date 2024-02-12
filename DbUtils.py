@@ -29,7 +29,7 @@ def setup_db(cursor: sqlite3.Cursor):
 
 
 def insert_job(cursor: sqlite3.Cursor, job_tuple: Tuple):
-    statement = '''INSERT OR IGNORE INTO jobs_listings 
+    statement = '''INSERT OR IGNORE INTO jobs_listings
     (job_id, job_title, company_name, job_description, location, min_salary, max_salary, salary_time,
     posted_at, url, remote) VALUES (?, ?, ?,?,?,?,?,?,?,?, ?);'''
     cursor.execute(statement, job_tuple)

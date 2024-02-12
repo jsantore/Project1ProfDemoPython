@@ -10,9 +10,6 @@ def main():
     DbUtils.close_db(conn)
 
 
-
-
-
 def save_output(data_to_write: list[dict]):
     output_file = open("output.txt", "w")
     for job in data_to_write:

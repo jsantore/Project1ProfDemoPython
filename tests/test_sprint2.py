@@ -1,8 +1,11 @@
 import DataProcessing
 import DbUtils
+
+
 def test_get_data():
     jobs_data = DataProcessing.get_multiple_pages_of_jobs(5)
     assert len(jobs_data) == 50
+
 
 def test_insert_data():
     conn, cursor = DbUtils.open_db("TestDB")
@@ -14,6 +17,6 @@ def test_insert_data():
     cursor.execute("""SELECT job_title, location, min_salary 
     FROM jobs_listings WHERE job_id = ?""", (sample_job[0],))
     record = cursor.fetchone()
-    assert record[0]=="Test Job"
-    assert record[1]=="Bridgewater, MA"
-    assert record[2]==50000
+    assert record[0] == "Test Job"
+    assert record[1] == "Bridgewater, MA"
+    assert record[2] == 50000
