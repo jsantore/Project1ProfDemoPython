@@ -20,13 +20,17 @@ def test_get_excel():  # this is beyond the test I asked for
     print(third_row)
     assert third_row[0] == "Job-3"
 
+
 def test_get_excel_data_existing_artifact():
     test_data = DataProcessing.get_excel_data("Sprint3Data.xlsx")
-    assert len(test_data) >=300
+    assert len(test_data) >= 300
+
 
 def test_jobs_table_exists():
     conn, cursor = DbUtils.open_db("Sprint3Test.db")
     DbUtils.setup_db(cursor)
     cursor.execute("Select * from sqlite_master where type='table' and name='jobs_listings';")
     table_records = cursor.fetchall()
-    assert len(table_records) ==1
+    assert len(table_records) == 1
+
+# no need to test write to table because I used the same one as in sprint2
