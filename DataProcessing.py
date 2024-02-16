@@ -1,5 +1,5 @@
 import re
-
+import openpyxl
 import secrets
 from serpapi import GoogleSearch
 from typing import Tuple, List
@@ -96,3 +96,32 @@ def get_salary(benefits_section: dict, job_description: str):
     if numbers:
         return int(numbers[0].replace(',', '')), int(numbers[1].replace(',', ''))
     return min_salary, max_salary
+
+
+def get_excel_data(file_name: str) -> List[Tuple]:
+    jobs_data = []
+    excel_file = openpyxl.load_workbook(file_name)
+    jobs_sheet = excel_file.active
+    for row in jobs_sheet.iter_rows(min_row=2):  # skip the first row which has the column names in it
+        db_ordered_job = order_row_for_db(row)
+        jobs_data.append(db_ordered_job)
+    return jobs_data
+
+
+def order_row_for_db(row: tuple) -> tuple:
+    remote = False
+    if "remote" in row[9].value.lower():
+        remote = True
+    return (
+        row[2].value,  # the job id is in column C
+        row[9].value,  # the job title is in column J
+        row[0].value,  # the company name is in column A
+        "No Description given for job",
+        row[4].value,  # the job location is in column E
+        row[7].value,  # the max salary is in column G
+        row[6].value,  # the min salary is in column H
+        row[8].value,  # the time period for the salary is in column I
+        row[1].value,  # the posted at is either in text in column B - which I have used, or in unix time on column F
+        "URL Not Available for job",
+        remote
+    )

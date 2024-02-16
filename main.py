@@ -5,8 +5,10 @@ import DbUtils
 def main():
     conn, cursor = DbUtils.open_db("Comp490Jobs.sqlite")
     DbUtils.setup_db(cursor)
-    complete_data = DataProcessing.get_multiple_pages_of_jobs(5)
-    DbUtils.save_to_db(cursor, complete_data)
+    api_jobs_data = DataProcessing.get_multiple_pages_of_jobs(15)
+    DbUtils.save_to_db(cursor, api_jobs_data)
+    excel_jobs_data = DataProcessing.get_excel_data("Sprint3Data.xlsx")
+    DbUtils.save_to_db(cursor, excel_jobs_data)
     DbUtils.close_db(conn)
 
 
