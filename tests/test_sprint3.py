@@ -27,11 +27,11 @@ def test_get_excel():  # this is beyond the test I asked for
                 f"Posted {row} days ago",
                 f"Job-{row}",
                 "US",
-                f"Bridgewater, MA",
+                "Bridgewater, MA",
                 1235324534215,
                 f"{(row + row) * 10000}",
                 f"{row * 10000}",
-                f"yearly",
+                "yearly",
                 "Software Developer Level {row}",
             ]
         )

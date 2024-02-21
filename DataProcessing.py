@@ -97,7 +97,7 @@ def get_salary(benefits_section: dict, job_description: str):
                     )
             numbers = re.findall(r"\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)", benefit_item)
             if (
-                len(numbers) == 2 and int(numbers[0].replace(",", "")) > 30
+                    len(numbers) == 2 and int(numbers[0].replace(",", "")) > 30
             ):  # some jobs just put the numbers in one item
                 # and the the description in another
                 return int(numbers[0].replace(",", "")), int(
@@ -112,7 +112,7 @@ def get_salary(benefits_section: dict, job_description: str):
         return min_salary, max_salary
     numbers = re.findall(
         r"\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)",
-        job_description[location : location + 50],
+        job_description[location: location + 50],
     )
     if numbers:
         return int(numbers[0].replace(",", "")), int(numbers[1].replace(",", ""))
@@ -124,7 +124,7 @@ def get_excel_data(file_name: str) -> List[Tuple]:
     excel_file = openpyxl.load_workbook(file_name)
     jobs_sheet = excel_file.active
     for row in jobs_sheet.iter_rows(
-        min_row=2
+            min_row=2
     ):  # skip the first row which has the column names in it
         db_ordered_job = order_row_for_db(row)
         jobs_data.append(db_ordered_job)
