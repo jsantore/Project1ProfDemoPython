@@ -3,7 +3,9 @@ from typing import Tuple
 
 
 def open_db(filename: str) -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
-    db_connection = sqlite3.connect(filename)  # connect to existing DB or create new one
+    db_connection = sqlite3.connect(
+        filename
+    )  # connect to existing DB or create new one
     cursor = db_connection.cursor()  # get ready to read/write data
     return db_connection, cursor
 
@@ -14,7 +16,8 @@ def close_db(connection: sqlite3.Connection):
 
 
 def setup_db(cursor: sqlite3.Cursor):
-    cursor.execute('''CREATE TABLE IF NOT EXISTS jobs_listings(
+    cursor.execute(
+        """CREATE TABLE IF NOT EXISTS jobs_listings(
     job_id TEXT PRIMARY KEY,
     job_title TEXT NOT NULL,
     company_name TEXT NOT NULL,
@@ -25,13 +28,14 @@ def setup_db(cursor: sqlite3.Cursor):
     salary_time TEXT DEFAULT "yearly",
     posted_at TEXT,
     url TEXT NOT NULL,
-    remote BOOLEAN NOT NULL);''')
+    remote BOOLEAN NOT NULL);"""
+    )
 
 
 def insert_job(cursor: sqlite3.Cursor, job_tuple: Tuple):
-    statement = '''INSERT OR IGNORE INTO jobs_listings
+    statement = """INSERT OR IGNORE INTO jobs_listings
     (job_id, job_title, company_name, job_description, location, min_salary, max_salary, salary_time,
-    posted_at, url, remote) VALUES (?, ?, ?,?,?,?,?,?,?,?, ?);'''
+    posted_at, url, remote) VALUES (?, ?, ?,?,?,?,?,?,?,?, ?);"""
     cursor.execute(statement, job_tuple)
 
 
